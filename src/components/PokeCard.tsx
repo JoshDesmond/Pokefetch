@@ -7,7 +7,9 @@ import PokeFetchService from '../model/PokeFetchService';
  * @param str String to capitalize
  * @returns String written in Title Case
  */
-function titleCase(str: string): string {
+function titleCase(str: string | null | undefined): string {
+  if (!str) return '';
+
   const words = str.toLowerCase().split(' ');
   for (let i = 0; i < words.length; i++) {
     words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
@@ -19,32 +21,43 @@ const pokeFetchService = new PokeFetchService();
 
 const PokeCard: React.FC<{ index: number }> = ({ index }) => {
   const [data, setData] = useState<PokemonData | null>(null);
-  const [loading, setLoading ] = useState(true);
+  const [loadingData, setLoadingData] = useState(true);
+  const [loadingImage, setLoadingImage] = useState(true);
 
   const imageURL = pokeFetchService.getPokemonImageURL(index);
 
   useEffect(() => {
-    setLoading(true);
+    setLoadingData(true);
     pokeFetchService.fetchPokemonData(index).then(data => {
       setData(data);
-      setLoading(false);
+      setLoadingData(false);
     });
   }, [index]);
 
-  if (index == null || loading) {
-    return <div className="loading-div">Loading...</div>;
-  }
-
   return (
     <div className="poke-card">
-      <h2>{titleCase(data!.name)}</h2>
-      <img src={imageURL} width={300} height={300} alt={data?.name || 'pokemon'} />
-      <h3>Abilities:</h3>
-      <ul>
-        {data!.abilities.map((ability, index) => (
-          <li key={index}>{titleCase(ability.ability.name)}</li>
-        ))}
-      </ul>
+      {/* Conditionally show loading display */}
+      <div style={{ display: (loadingData || loadingImage) ? 'block' : 'none' }}>
+        Loading...
+      </div>
+      
+      {/* Always render in dom in order for the image to pre-load, but conditionally show it */}
+      <div style={{ display: (loadingData || loadingImage) ? 'none' : 'block' }}>
+        <h2>{titleCase(data?.name)}</h2>
+        <img 
+          src={imageURL} 
+          width={300} 
+          height={300} 
+          alt={data?.name || 'pokemon'}
+          onLoad={() => setLoadingImage(false)} 
+        />
+        <h3>Abilities:</h3>
+        <ul>
+          {data?.abilities.map((ability, idx) => (
+            <li key={idx}>{titleCase(ability.ability.name)}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
