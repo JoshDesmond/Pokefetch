@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/styles.css';
 
 interface PokeCardProps {
   data: PokemonData | null;
@@ -24,7 +25,7 @@ const PokeCard: React.FC<PokeCardProps> = ({ data }) => {
   return (
     <div className="poke-card">
       <h2>{titleCase(data.name)}</h2>
-      <img src={data.imageURL} alt={`Image of ${data.name}`} width='500' height='500'></img>
+      <img src={data.imageURL} alt={`Image of ${data.name}`} width='300' height='300'></img>
       <h3>Abilities:</h3>
       <ul>
         {data.abilities.map((ability, index) => (
