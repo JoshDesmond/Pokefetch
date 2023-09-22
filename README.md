@@ -1,27 +1,11 @@
-# React + TypeScript + Vite
+# PokeFetch
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Pokefetch is a quickly made React application that connects to https://pokeapi.co/‘s API. The page will randomly fetch a Pokemon on initial start, and display the image of the pokemon, its name, and its abilities. There is also be a button that will fetch a random pokemon.
 
-Currently, two official plugins are available:
+### Build Instructions
+This app is built with bun. To build, first install bun either via instructions at https://bun.sh/, or via `npm install -g bun`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+After, run `bun install` to install depedencies, and then run the project with either `bun dev`, or do `bun run build` followed by `bun run preview` to build and preview for production.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Bun
+This project was created using `bun create vite` in bun v1.0.2, and uses React + TypeScript + Vite. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
