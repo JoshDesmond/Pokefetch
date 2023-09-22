@@ -5,48 +5,37 @@
  */
 const NUM_POKEMON: number = 1017;
 
-interface PokemonData {
-    name: string;
-    abilities: Abilities[];
-}
-
-interface Ability {
-    name: string;
-    url: string;
-}
-
-interface Abilities {
-    ability: Ability;
-    is_hidden: boolean;
-    slot: number;
-}
-
-
 class PokeFetchService {
 
-    async fetchPokemonImage(index: number): Promise<any> {
-        return; // TODO
+  async fetchRandomPokemon(): Promise<PokemonData> {
+    return this.fetchPokemonData(getRandomId());
+  }
+
+  private async fetchPokemonData(index: number): Promise<PokemonData> {
+    try {
+      const apiUrl = `https://pokeapi.co/api/v2/pokemon/${index}`;
+      const response = await fetch(apiUrl);
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch Pokemon data. Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      data.imageURL = getPokemonImageURL(index);
+      return data as PokemonData;
+    } catch (error) {
+      console.error('Error fetching Pokémon data:', error);
+      throw error;
     }
+  }
+}
 
-    async fetchRandomPokemon(): Promise<any> {
-        return; // TODO
-    }
+function getPokemonImageURL(index: number): string {
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`;
+}
 
-    async fetchPokemonData(index: number): Promise<PokemonData> {
-        try {
-            const apiUrl = `https://pokeapi.co/api/v2/pokemon/${index}`;
-            const response = await fetch(apiUrl);
-
-            if (!response.ok) {
-                throw new Error(`Failed to fetch Pokemon data. Status: ${response.status}`);
-            }
-
-            return response.json();
-        } catch (error) {
-            console.error('Error fetching Pokémon data:', error);
-            throw error;
-        }
-    }
+function getRandomId(): number {
+  return Math.floor(Math.random() * (NUM_POKEMON)) + 1;
 }
 
 export default PokeFetchService;

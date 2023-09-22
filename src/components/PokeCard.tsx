@@ -1,10 +1,5 @@
 import React from 'react';
 
-interface PokemonData {
-  name: string;
-  abilities: { ability: { name: string } }[];
-}
-
 interface PokeCardProps {
   data: PokemonData | null;
 }
@@ -23,12 +18,13 @@ function titleCase(str: string): string {
 
 const PokeCard: React.FC<PokeCardProps> = ({ data }) => {
   if (!data) {
-    return <div>Loading...</div>; // You can render a loading message while data is being fetched
+    return <div>Loading...</div>;
   }
 
   return (
     <div className="poke-card">
       <h2>{titleCase(data.name)}</h2>
+      <img src={data.imageURL} alt={`Image of ${data.name}`} width='500' height='500'></img>
       <h3>Abilities:</h3>
       <ul>
         {data.abilities.map((ability, index) => (
